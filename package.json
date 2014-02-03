@@ -1,0 +1,43 @@
+{
+  "name": "grunt-custom-styleguide",
+  "description": "Creates a styleguide from commented CSS files.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/sullinger/grunt-custom-styleguide",
+  "author": {
+    "name": "Stefan Ullinger",
+    "email": "stefan@slicemenice.de",
+    "url": "http://www.slicemenice.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sullinger/grunt-custom-styleguide.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sullinger/grunt-custom-styleguide/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/sullinger/grunt-custom-styleguide/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.2"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin",
+    "styleguide"
+  ]
+}
