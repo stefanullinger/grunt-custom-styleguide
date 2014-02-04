@@ -1,6 +1,6 @@
 # grunt-custom-styleguide
 
-> Creates a custom styleguide from commented CSS files.
+> Creates a custom styleguide from (commented) CSS files.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`

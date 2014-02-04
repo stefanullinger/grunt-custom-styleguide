@@ -1,6 +1,6 @@
 {
   "name": "grunt-custom-styleguide",
-  "description": "Creates a custom styleguide from commented CSS files.",
+  "description": "Creates a custom styleguide from (commented) CSS files.",
   "version": "0.1.0",
   "homepage": "https://github.com/sullinger/grunt-custom-styleguide",
   "author": {
