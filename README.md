@@ -100,6 +100,8 @@ grunt.initConfig(
 
 ## Release History
 
+**Note:** Still under active development with no official release, use at your own risk.
+
 __0.1.0__
 
   * Defined custom_styleguide task.
