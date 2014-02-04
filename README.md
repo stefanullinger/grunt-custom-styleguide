@@ -1,6 +1,6 @@
 # grunt-custom-styleguide
 
-> Creates a styleguide from commented CSS files.
+> Creates a custom styleguide from commented CSS files.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
@@ -37,53 +37,66 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.process
+Type: `Function`
+Default value: `false`
 
-A string value that is used to do something with whatever.
+If specified the custom_styleguide task will pass all stylesheet rules grouped by stylesheet filename to this function. It allows you to define what rules of your stylesheets you want to process and what should be generated out of this information. See example below.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### Process function example
+In this example, the process option is used to create a very basic styleguide. The process option allows advanced customization of processing the stylesheet rules and let's you define what you would like to do with the received data.
 
 ```js
-grunt.initConfig({
-  custom_styleguide: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+// using marked here as an example - marked is a full-featured markdown parser and compiler, written in JavaScript.
+var marked = require('marked');
+
+grunt.initConfig(
+{
+  custom_styleguide:
+  {
+    options:
+    {
+      process: function( stylesheets, outputPath )
+      {
+        var allRules = [];
+            
+        for ( var sheet in stylesheets )
+        {
+          allRules = allRules.concat( stylesheets[ sheet ].rules );
+        }
+
+        var commentBlocks = [];
+
+        for ( var i = 0; i < allRules.length; i++ )
+        {
+          var rule = allRules[i];
+
+          switch ( rule.type )
+          {
+            case "comment":
+              // this is just a basic example
+              // you could use marked.lexer to parse the comment for headings or code
+              commentBlocks.push( '<div class="styleguide-comment">' + marked( rule.comment ) + '</div>' );
+              break;
+          }
+        }
+
+        grunt.file.write( outputPath, commentBlocks.join('\n') );
+      }
+    },
+    files:
+    {
+      'styleguide.html': [ 'path/to/style.css', 'path/to/advanced-style.css' ],
     },
   },
 });
 ```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  custom_styleguide: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+
+__0.1.0__
+
+  * Defined custom_styleguide task.

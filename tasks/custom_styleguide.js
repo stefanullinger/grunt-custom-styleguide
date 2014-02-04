@@ -10,41 +10,63 @@
 
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+  var parse = require('css-parse'),
 
+  DEFAULT_OPTIONS = {
+    process: false
+  };
+
+  function GruntCustomStyleguide(options) {
+    this.options = options(DEFAULT_OPTIONS);
+  }
+
+  GruntCustomStyleguide.prototype.parseStylesheet = function(file) {
+    var stylesheetContent = this._getStylesheetContent(file);
+
+    var parsedFile = parse(stylesheetContent);
+
+    if (false === parsedFile ||
+        false === parsedFile.stylesheet ||
+        false === parsedFile.stylesheet.rules) {
+      grunt.fail.fatal("Could not parse CSS for " + file);
+    }
+
+    return parsedFile.stylesheet.rules;
+  };
+
+  GruntCustomStyleguide.prototype._getStylesheetContent = function(file)
+  {
+    if (grunt.file.exists(file)) {
+      return grunt.file.read(file);
+    }
+    else if (typeof file === "string") {
+      return file;
+    }
+
+    return '';
+  };
+
+  
   grunt.registerMultiTask('custom_styleguide', 'Creates a styleguide from commented CSS files.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+    var styleguide = new GruntCustomStyleguide(this.options);
 
-      // Handle options.
-      src += options.punctuation;
+    var stylesheets = {};
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+    this.files.forEach(function(file) {
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
+      file.src.forEach(function(filepath) { 
+        stylesheets[filepath] = {
+          rules: styleguide.parseStylesheet(filepath)
+        };
+      });
+
+      if (false !== styleguide.options.process) {
+        styleguide.options.process(stylesheets, file.dest);
+      }
+
+    });    
+
   });
 
 };

@@ -8,6 +8,8 @@
 
 'use strict';
 
+var marked = require( 'marked' );
+
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -30,22 +32,40 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     custom_styleguide: {
-      default_options: {
+      basic_process_test: {
         options: {
+          process: function(stylesheets, outputPath) {
+
+            var allRules = [];
+            
+            for (var sheet in stylesheets) {
+              allRules = allRules.concat(stylesheets[sheet].rules);
+            }
+
+            var commentBlocks = [];
+
+            for ( var i = 0; i < allRules.length; i++ )
+            {
+              var rule = allRules[i];
+
+              switch ( rule.type )
+              {
+                case "comment":
+                  commentBlocks.push( '<div class="styleguide-comment">' + marked( rule.comment ) + '</div>' );
+                  break;
+              }
+
+            }
+
+            grunt.file.write(outputPath, commentBlocks.join('\n') );
+            //grunt.file.write(outputPath, JSON.stringify(allRules, null, 2));
+            
+          }
         },
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
+          'tmp/basic_process_test.json': ['test/fixtures/simple.css','test/fixtures/buttons.css'],
         },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
+      }
     },
 
     // Unit tests.
