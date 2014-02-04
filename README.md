@@ -1,5 +1,8 @@
 # grunt-custom-styleguide
 
+[![Build Status](https://travis-ci.org/sullinger/grunt-custom-styleguide.png?branch=master)](https://travis-ci.org/sullinger/grunt-custom-styleguide)
+[![NPM version](https://badge.fury.io/js/grunt-custom-styleguide.png)](http://badge.fury.io/js/grunt-custom-styleguide)
+
 > Creates a custom styleguide from (commented) CSS files.
 
 ## Getting Started
