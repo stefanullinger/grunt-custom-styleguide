@@ -8,8 +8,6 @@
 
 'use strict';
 
-var marked = require( 'marked' );
-
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -42,24 +40,7 @@ module.exports = function(grunt) {
               allRules = allRules.concat(stylesheets[sheet].rules);
             }
 
-            var commentBlocks = [];
-
-            for ( var i = 0; i < allRules.length; i++ )
-            {
-              var rule = allRules[i];
-
-              switch ( rule.type )
-              {
-                case "comment":
-                  commentBlocks.push( '<div class="styleguide-comment">' + marked( rule.comment ) + '</div>' );
-                  break;
-              }
-
-            }
-
-            grunt.file.write(outputPath, commentBlocks.join('\n') );
-            //grunt.file.write(outputPath, JSON.stringify(allRules, null, 2));
-            
+            grunt.file.write(outputPath, JSON.stringify(allRules, null, 2));            
           }
         },
         files: {
