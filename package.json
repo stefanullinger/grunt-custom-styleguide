@@ -1,7 +1,7 @@
 {
   "name": "grunt-custom-styleguide",
   "description": "Creates a custom styleguide from (commented) CSS files.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/sullinger/grunt-custom-styleguide",
   "author": {
     "name": "Stefan Ullinger",
@@ -41,6 +41,10 @@
     "styleguide"
   ],
   "dependencies": {
-    "css-parse": "~1.7.0"
+    "css-parse": "~1.7.0",
+    "inherit": "~2.1.0",
+    "node.extend": "~1.0.9",
+    "marked": "~0.3.1",
+    "twig": "~0.6.0"
   }
 }

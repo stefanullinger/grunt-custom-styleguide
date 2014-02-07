@@ -1,0 +1,17 @@
+/* 
+## Button
+
+This is a test example bundled with grunt-custom-styleguide
+
+```
+<a href="#" class="button">Publish post</a> 
+<a href="#" class="button">Save as draft</a>
+```
+
+ */
+.button {
+    background: #ccc;
+    color: #000;
+    display: inline-block;
+    padding: 5px 10px;
+}

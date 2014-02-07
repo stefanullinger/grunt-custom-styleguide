@@ -27,12 +27,23 @@ exports.custom_styleguide = {
     // setup here if necessary
     done();
   },
-  basic_process_test: function(test) {
+
+  shouldCreateAStyleguideFromMultipleStylesheetsUsingMarkdownProcessor: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/basic_process_test.json');
-    var expected = grunt.file.read('test/expected/basic_process_test.json');
-    test.equal(actual, expected, 'should run the process function for specified files when defined');
+    var actual = grunt.file.read('tmp/styleguide_from_multiple_css_files_using_markdown_test.html');
+    var expected = grunt.file.read('test/expected/styleguide_from_multiple_css_files_using_markdown_test.html');
+    test.equal(actual, expected, 'should create a styleguide from multiple css files using the markdown processor.');
+
+    test.done();
+  },
+
+  shouldBePossibleToProvideCustomProcessorWithCustomProcessFunction: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/custom_styleguide_processor_test.html');
+    var expected = grunt.file.read('test/expected/custom_styleguide_processor_test.html');
+    test.equal(actual, expected, 'should be possible to provide custom processor with custom process function.');
 
     test.done();
   }

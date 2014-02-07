@@ -1,0 +1,74 @@
+[
+  {
+    "type": "comment",
+    "comment": " \n\n# Headline Level 1\n\n## Headline Level 2\n\n",
+    "stylesheet": "test/fixtures/base.css"
+  },
+  {
+    "type": "comment",
+    "comment": "\n\n### Headline Level 3\nhttps://github.com/sullinger/grunt-custom-styleguide\n \nThis is a test example bundled with grunt-custom-styleguide.\n\n ",
+    "stylesheet": "test/fixtures/base.css"
+  },
+  {
+    "type": "rule",
+    "selectors": [
+      ".body"
+    ],
+    "declarations": [
+      {
+        "type": "declaration",
+        "property": "background",
+        "value": "'#fff'"
+      }
+    ],
+    "stylesheet": "test/fixtures/base.css"
+  },
+  {
+    "type": "rule",
+    "selectors": [
+      ".body a"
+    ],
+    "declarations": [
+      {
+        "type": "declaration",
+        "property": "color",
+        "value": "blue"
+      }
+    ],
+    "stylesheet": "test/fixtures/base.css"
+  },
+  {
+    "type": "comment",
+    "comment": " \n## Button\n\nThis is a test example bundled with grunt-custom-styleguide\n\n```\n<a href=\"#\" class=\"button\">Publish post</a> \n<a href=\"#\" class=\"button\">Save as draft</a>\n```\n\n ",
+    "stylesheet": "test/fixtures/button.css"
+  },
+  {
+    "type": "rule",
+    "selectors": [
+      ".button"
+    ],
+    "declarations": [
+      {
+        "type": "declaration",
+        "property": "background",
+        "value": "#ccc"
+      },
+      {
+        "type": "declaration",
+        "property": "color",
+        "value": "#000"
+      },
+      {
+        "type": "declaration",
+        "property": "display",
+        "value": "inline-block"
+      },
+      {
+        "type": "declaration",
+        "property": "padding",
+        "value": "5px 10px"
+      }
+    ],
+    "stylesheet": "test/fixtures/button.css"
+  }
+]

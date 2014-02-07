@@ -40,21 +40,25 @@ grunt.initConfig({
 
 ### Options
 
-#### options.process
-Type: `Function`
-Default value: `false`
+#### options.processor
+Type: `String` or `Object`
+Default value: `markdown`
 
-If specified the custom_styleguide task will pass all stylesheet rules grouped by stylesheet filename to this function. It allows you to define what rules of your stylesheets you want to process and what should be generated out of this information. See example below.
+Specifies the processer to use. Either provide a string matching the name of one of the registered processors (currently the only built-in processor is 'markdown') or provide a javascript object. In this object you can either define your own `process` function and any helper function you like or override functions of built-in processors (use in conjunction with `inheritFromBuiltInProcessor` option). See examples below.
+
+#### options.inheritFromBuiltInProcessor
+Type: `String`
+Default value: ``
+
+Name of one of the built-in processors that should be extended by the object you provided using the `processor` option.
 
 
 ### Usage Examples
 
-#### Process function example
-In this example, the process option is used to create a very basic styleguide. The process option allows advanced customization of processing the stylesheet rules and let's you define what you would like to do with the received data.
+#### Markdown processor example
+Basic example demonstrating the use of build-in processors.
 
 ```js
-// using marked here as an example - marked is a full-featured markdown parser and compiler, written in JavaScript.
-var marked = require('marked');
 
 grunt.initConfig(
 {
@@ -62,33 +66,7 @@ grunt.initConfig(
   {
     options:
     {
-      process: function( stylesheets, outputPath )
-      {
-        var allRules = [];
-            
-        for ( var sheet in stylesheets )
-        {
-          allRules = allRules.concat( stylesheets[ sheet ].rules );
-        }
-
-        var commentBlocks = [];
-
-        for ( var i = 0; i < allRules.length; i++ )
-        {
-          var rule = allRules[i];
-
-          switch ( rule.type )
-          {
-            case "comment":
-              // this is just a basic example
-              // you could use marked.lexer to parse the comment for headings or code
-              commentBlocks.push( '<div class="styleguide-comment">' + marked( rule.comment ) + '</div>' );
-              break;
-          }
-        }
-
-        grunt.file.write( outputPath, commentBlocks.join('\n') );
-      }
+      processor: 'markdown'
     },
     files:
     {
@@ -98,9 +76,73 @@ grunt.initConfig(
 });
 ```
 
+#### Custom processor example
+In this example, a custom processor is provided to the task. This gives you full control on how your styleguide is generated. If you think that other might be interested in your styleguide processor, please create a pull request.
+
+```js
+
+grunt.initConfig(
+{
+  custom_styleguide:
+  {
+    options:
+    {
+      processor:
+      {
+        process: function(stylesheets, outputPath)
+        {
+          // stylesheets is an object. Each key-value pair consists of
+          // the stylesheet filename (key) and the an array of all rules (value)
+          // found in the stylesheet file.
+
+          var rules = this.getRulesFromStylesheets(stylesheets);
+
+          // you can do any kind of processing and file handling here
+          grunt.file.write(outputFile, JSON.stringify(rules, null, 2));
+        },
+
+        getRulesFromStylesheets: function(stylesheets)
+        {
+          var allRules = [];
+
+          // grab all rules from the stylesheets
+          for (var sheet in stylesheets)
+          {
+            var rules = stylesheets[sheet].rules;
+
+            rules = rules.map(function(rule)
+            {
+              rule.stylesheet = sheet;
+              return rule;
+            });
+
+            allRules = allRules.concat(rules);
+          }
+
+          return allRules;
+        }
+
+      },
+      inheritFromBuiltInProcessor: 'markdown'
+    },
+    files:
+    {
+      'styleguide.html': [ 'path/to/style.css', 'path/to/advanced-style.css' ],
+    },
+  },
+});
+```
+
+**Note:** I will add more examples shortly.
+
+
 ## Release History
 
 **Note:** Still under active development with no official release, use at your own risk.
+
+__0.2.0__
+
+  * Refactored custom_styleguide task to make it as flexible as possible. You can now use built-in processors, extend them partially or provide your own.
 
 __0.1.0__
 

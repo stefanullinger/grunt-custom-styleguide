@@ -1,0 +1,22 @@
+/* 
+
+# Headline Level 1
+
+## Headline Level 2
+
+*/
+/*
+
+### Headline Level 3
+https://github.com/sullinger/grunt-custom-styleguide
+ 
+This is a test example bundled with grunt-custom-styleguide.
+
+ */
+ .body {
+ 	background: '#fff';
+ }
+
+ .body a {
+ 	color: blue;
+ }

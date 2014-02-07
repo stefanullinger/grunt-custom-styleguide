@@ -30,23 +30,65 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     custom_styleguide: {
-      basic_process_test: {
+      
+      styleguide_from_multiple_css_files_using_markdown_test: {
         options: {
-          process: function(stylesheets, outputPath) {
-
-            var allRules = [];
-            
-            for (var sheet in stylesheets) {
-              allRules = allRules.concat(stylesheets[sheet].rules);
-            }
-
-            grunt.file.write(outputPath, JSON.stringify(allRules, null, 2));            
-          }
+          processor: 'markdown',
         },
         files: {
-          'tmp/basic_process_test.json': ['test/fixtures/simple.css','test/fixtures/buttons.css'],
+          'tmp/styleguide_from_multiple_css_files_using_markdown_test.html': ['test/fixtures/base.css','test/fixtures/button.css'],
+        }
+      },
+
+      custom_styleguide_processor_test: {
+        options:
+        {
+          processor:
+          {
+            process: function(stylesheets, outputFile)
+            {
+              // stylesheets is an object. Each key-value pair consists of
+              // the stylesheet filename (key) and the an array of all rules (value)
+              // found in the stylesheet file.
+
+              var rules = this.getRulesFromStylesheets(stylesheets);
+
+              // you can do any kind of processing and file handling here
+              grunt.file.write(outputFile, JSON.stringify(rules, null, 2));
+            },
+
+            getRulesFromStylesheets: function(stylesheets)
+            {
+              var allRules = [];
+
+              var processRule = function(rule)
+              {
+                rule.stylesheet = sheet;
+                return rule;
+              };
+
+              // grab all rules from the stylesheets
+              for (var sheet in stylesheets)
+              {
+                var rules = stylesheets[sheet].rules;
+
+                rules = rules.map(processRule);
+
+                allRules = allRules.concat(rules);
+              }
+
+              return allRules;
+            }
+
+          },
+          inheritFromBuiltInProcessor: 'markdown'
+        },
+        files:
+        {
+          'tmp/custom_styleguide_processor_test.html': ['test/fixtures/base.css','test/fixtures/button.css'],
         },
       }
+
     },
 
     // Unit tests.

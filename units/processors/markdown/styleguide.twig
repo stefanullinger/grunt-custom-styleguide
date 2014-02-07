@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Styleguide</title>
+		{% for sheet in stylesheets %}
+			<link rel="stylesheet" type="text/css" href="{{ sheet }}">
+		{% endfor %}
+	</head>
+	<body>
+		{% for currentBlock in blocks %}
+        	{{ currentBlock.content }}
+    	{% endfor %}
+	</body>
+</html>
