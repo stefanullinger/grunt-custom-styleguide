@@ -1,6 +1,6 @@
 /*
  * grunt-custom-styleguide
- * https://github.com/stefan/grunt-custom-styleguide
+ * https://github.com/sullinger/grunt-custom-styleguide
  *
  * Copyright (c) 2014 Stefan Ullinger
  * Licensed under the MIT license.
@@ -34,9 +34,10 @@ module.exports = function(grunt) {
       styleguide_from_multiple_css_files_using_markdown_test: {
         options: {
           processor: 'markdown',
+          source_path: 'test/fixtures'
         },
         files: {
-          'tmp/styleguide_from_multiple_css_files_using_markdown_test.html': ['test/fixtures/base.css','test/fixtures/button.css'],
+          'tmp/styleguide_from_multiple_css_files_using_markdown_test.html': ['base.css','button.css'],
         }
       },
 
@@ -80,8 +81,7 @@ module.exports = function(grunt) {
               return allRules;
             }
 
-          },
-          inheritFromBuiltInProcessor: 'markdown'
+          }
         },
         files:
         {

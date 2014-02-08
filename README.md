@@ -52,6 +52,12 @@ Default value: ``
 
 Name of one of the built-in processors that should be extended by the object you provided using the `processor` option.
 
+#### options.source_path
+Type: `String`
+Default value: ``
+
+Using the `source_path` parameter you can set the base path for all the stylesheet dependencies. This is useful, when you have your stylesheets in special subdirectory (e.g. a source or build output directory). When defining the files array, you can then provide the filenames relative to this directory and the processor's process function will provide you these relative filenames instead of a filepath where you would have to remove some parts. Working on an example to demonstrate this!
+
 
 ### Usage Examples
 
@@ -139,6 +145,10 @@ grunt.initConfig(
 ## Release History
 
 **Note:** Still under active development with no official release, use at your own risk.
+
+__0.2.1__
+
+  * Added `source_path` option.
 
 __0.2.0__
 

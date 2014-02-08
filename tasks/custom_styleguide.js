@@ -13,6 +13,7 @@ module.exports = function(grunt) {
   var GruntCustomStyleguide = require('../units/GruntCustomStyleguide.js')(grunt);
   var inherit = require('inherit');
   var extend = require('node.extend');
+  var path = require('path');
   var GruntCustomStyleguideProcessor = require('../units/GruntCustomStyleguideProcessor.js')(grunt);
   
 
@@ -36,9 +37,10 @@ module.exports = function(grunt) {
 
       var stylesheets = {};
 
-      file.src.forEach(function(filepath) { 
+      file.orig.src.forEach(function(filepath) {
+
         stylesheets[filepath] = {
-          rules: styleguide.parseStylesheet(filepath)
+          rules: styleguide.parseStylesheet(path.join(styleguide.options.source_path || '', filepath))
         };
       });
 
