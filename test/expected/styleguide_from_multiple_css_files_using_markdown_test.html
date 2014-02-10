@@ -4,6 +4,7 @@
 		<title>Styleguide</title>
 					<link rel="stylesheet" type="text/css" href="base.css">
 					<link rel="stylesheet" type="text/css" href="button.css">
+					<link rel="stylesheet" type="text/css" href="markdown-test.css">
 			</head>
 	<body>
 		        	<div class="styleguide-comment">
@@ -27,11 +28,170 @@
 
     	        	<p>This is a test example bundled with grunt-custom-styleguide</p>
 
-    	        	<div class="styleguide-codeDemo"<a href="#" class="button">Publish post</a> 
+    	        	<div class="styleguide-codeDemo"><a href="#" class="button">Publish post</a> 
 <a href="#" class="button">Save as draft</a></div>
     	        	<pre><code>&lt;a href=&quot;#&quot; class=&quot;button&quot;&gt;Publish post&lt;/a&gt; 
 &lt;a href=&quot;#&quot; class=&quot;button&quot;&gt;Save as draft&lt;/a&gt;
 </code></pre>
+    	        	</div>
+    	        	<div class="styleguide-comment">
+    	        	
+    	        	<p><a href="http://www.unexpected-vortices.com/sw/gouda/quick-markdown-example.html">http://www.unexpected-vortices.com/sw/gouda/quick-markdown-example.html</a></p>
+
+    	        	<h1 id="an-h1-header">An h1 header</h1>
+
+    	        	<p>Paragraphs are separated by a blank line.</p>
+
+    	        	<p>2nd paragraph. <em>Italic</em>, <strong>bold</strong>, <code>monospace</code>. Itemized lists
+look like:</p>
+
+    	        	<ul>
+<li>this one</li>
+<li>that one</li>
+<li>the other one</li>
+</ul>
+
+    	        	<p>Note that --- not considering the asterisk --- the actual text
+content starts at 4-columns in.</p>
+
+    	        	<blockquote>
+<p>Block quotes are
+written like so.</p>
+<p>They can span multiple paragraphs,
+if you like.</p>
+</blockquote>
+
+    	        	<p>Use 3 dashes for an em-dash. Use 2 dashes for ranges (ex. &quot;it&#39;s all in
+chapters 12--14&quot;). Three dots ... will be converted to an ellipsis.</p>
+
+    	        	<h2 id="an-h2-header">An h2 header</h2>
+
+    	        	<p>Here&#39;s a numbered list:</p>
+
+    	        	<ol>
+<li>first item</li>
+<li>second item</li>
+<li>third item</li>
+</ol>
+
+    	        	<p>Note again how the actual text starts at 4 columns in (4 characters
+from the left side). Here&#39;s a code sample:</p>
+
+    	        	<div class="styleguide-codeDemo"># Let me re-iterate ...
+for i in 1 .. 10 { do-something(i) }</div>
+    	        	<pre><code># Let me re-iterate ...
+for i in 1 .. 10 { do-something(i) }
+</code></pre>
+    	        	<p>As you probably guessed, indented 4 spaces. By the way, instead of
+indenting the block, you can use delimited blocks, if you like:</p>
+
+    	        	<div class="styleguide-codeDemo">define foobar() {
+    print &quot;Welcome to flavor country!&quot;;
+}</div>
+    	        	<pre><code>define foobar() {
+    print &quot;Welcome to flavor country!&quot;;
+}
+</code></pre>
+    	        	<p>(which makes copying &amp; pasting easier). You can optionally mark the
+delimited block for Pandoc to syntax highlight it:</p>
+
+    	        	<div class="styleguide-codeDemo">import time
+# Quick, count to ten!
+for i in range(10):
+    # (but not <em>too</em> quick)
+    time.sleep(0.5)
+    print i</div>
+    	        	<pre><code class="lang-python">import time
+# Quick, count to ten!
+for i in range(10):
+    # (but not *too* quick)
+    time.sleep(0.5)
+    print i
+</code></pre>
+
+    	        	<h3 id="an-h3-header">An h3 header</h3>
+
+    	        	<p>Now a nested list:</p>
+
+    	        	<ol>
+<li><p>First, get these ingredients:</p>
+<ul>
+<li>carrots</li>
+<li>celery</li>
+<li>lentils</li>
+</ul>
+</li>
+<li><p>Boil some water.</p>
+</li>
+<li><p>Dump everything in the pot and follow
+this algorithm:</p>
+<pre><code>find wooden spoon
+uncover pot
+stir
+cover pot
+balance wooden spoon precariously on pot handle
+wait 10 minutes
+goto first step (or shut off burner when done)
+</code></pre><p>Do not bump wooden spoon or it will fall.</p>
+</li>
+</ol>
+
+    	        	<p>Notice again how text always lines up on 4-space indents (including
+that last line which continues item 3 above). Here&#39;s a link to <a href="http://foo.bar">a
+website</a>. Here&#39;s a link to a <a href="local-doc.html">local
+doc</a>. Here&#39;s a footnote [^1].</p>
+
+    	        	<p>[^1]: Footnote text goes here.</p>
+
+    	        	<p>Tables can look like this:</p>
+
+    	        	<p>size  material      color</p>
+
+    	        	<hr>
+
+    	        	<p>9     leather       brown
+10    hemp canvas   natural
+11    glass         transparent</p>
+
+    	        	<p>Table: Shoes, their sizes, and what they&#39;re made of</p>
+
+    	        	<p>(The above is the caption for the table.) Here&#39;s a definition list:</p>
+
+    	        	<p>apples
+  : Good for making applesauce.
+oranges
+  : Citrus!
+tomatoes
+  : There&#39;s no &quot;e&quot; in tomatoe.</p>
+
+    	        	<p>Again, text is indented 4 spaces. (Alternately, put blank lines in
+between each of the above definition list lines to spread things
+out more.)</p>
+
+    	        	<p>Inline math equations go in like so: $\omega = d\phi / dt$. Display
+math should get its own line and be put in in double-dollarsigns:</p>
+
+    	        	<p>$$I = \int \rho R^{2} dV$$</p>
+
+    	        	<p>Done.</p>
+
+    	        	</div>
+    	        	<div class="styleguide-comment">
+    	        	
+    	        	<p><a href="http://daringfireball.net/projects/markdown/syntax">http://daringfireball.net/projects/markdown/syntax</a></p>
+
+    	        	<p>Blockquotes can contain other Markdown elements, including headers, lists, and code blocks:</p>
+
+    	        	<blockquote>
+<h2 id="this-is-a-header-">This is a header.</h2>
+<ol>
+<li>This is the first list item.</li>
+<li>This is the second list item.</li>
+</ol>
+<p>Here&#39;s some example code:</p>
+<pre><code>return shell_exec(&quot;echo $input | $markdown_script&quot;);
+</code></pre></blockquote>
+
     	        	</div>
     		</body>
 </html>

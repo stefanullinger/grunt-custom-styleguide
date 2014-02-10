@@ -146,6 +146,10 @@ grunt.initConfig(
 
 **Note:** Still under active development with no official release, use at your own risk.
 
+__0.2.2__
+
+  * Fixed built-in markdown parser to handle lists, blockquotes and other nested items.
+
 __0.2.1__
 
   * Added `source_path` option.

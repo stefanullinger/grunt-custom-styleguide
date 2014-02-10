@@ -12,6 +12,12 @@ var extend = require('node.extend');
 var Twig = require('twig');
 var path = require('path');
 
+if (typeof String.prototype.endsWith !== 'function') {
+  String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+  };
+}
+
 module.exports = function(grunt, inherit, GruntCustomStylesheetProcessor) {
 
   return inherit(GruntCustomStylesheetProcessor, {
@@ -24,8 +30,7 @@ module.exports = function(grunt, inherit, GruntCustomStylesheetProcessor) {
 
       this.blockDefinition = {
         type: 'undefined',
-        content: '',
-        rawContent: ''
+        content: ''
       };
     },
 
@@ -106,59 +111,107 @@ module.exports = function(grunt, inherit, GruntCustomStylesheetProcessor) {
     },
 
     getCodeDemoHTML: function(html) {
-      return '<div class="styleguide-codeDemo"' + html + '</div>'
+      return '<div class="styleguide-codeDemo">' + html + '</div>'
     },
 
     getBlocksFromCommentRule: function(rule) {
       var blocks = [];
 
       var tokens = this.marked.lexer(rule.comment);
+
+      // handle nested lists, blockquotes, etc.
+      // nested items must make up a single block, otherwise marked.parser would fail to generate the content
+      var collectTokens = false;
+      var collectTokensStackSize = 0;
+      var collectTokensUntil = '';
+      var tokenCollection = false;
       
-      for (var i = 0; i < tokens.length; i++) {
-        
+      for (var i = 0; i < tokens.length; i++)
+      {
         var token = tokens[i];
-        
-        var tokensArray = [ token ];
-        tokensArray.links = tokens.links; // Tokens array requires a `links` property.
 
-        var block = extend( {}, this.blockDefinition, {
-          type: token.type,
-          content: this.marked.parser(tokensArray),
-          rawContent: token.text
-        });
-
-        var additionalBlocksBeforeCurrentBlock = [];
-        var additionalBlocksAfterCurrentBlock = [];
-
-        switch (token.type) {
-          case "code":
-            // create another block for a code demo
-
-            var codeExampleToken = {
-              type: 'html',
-              text: this.getCodeDemoHTML(token.text)
-            };
-
-            var exampleTokensArray = [codeExampleToken];
-            exampleTokensArray.links = tokens.links; // Tokens array requires a `links` property.
-
-            var codeExampleBlock = extend({}, this.blockDefinition, {
-              type: 'html',
-              content: this.marked.parser(exampleTokensArray),
-              rawContent: codeExampleToken.text
-            });
-
-            additionalBlocksBeforeCurrentBlock.push(codeExampleBlock);
-            break;
-
-          case "heading":
-            block.depth = token.depth;
-            break;
+        // if we are not currently collecting, but stumble of a *_start token,
+        // start a new collect sequence
+        if ( false === collectTokens && token.type.endsWith( '_start' ) )
+        {
+          collectTokens = true;
+          collectTokensStackSize = 0;
+          collectTokensUntil = token.type.replace('_start', '_end');
+          tokenCollection = [];
         }
 
-        blocks = blocks.concat(additionalBlocksBeforeCurrentBlock);
-        blocks.push( block );
-        blocks = blocks.concat(additionalBlocksAfterCurrentBlock);
+        if ( collectTokens === true )
+        {
+          tokenCollection.push( token );
+
+          // check for nested tokens ... compare the current token
+          // with the start token of this collection sequence
+          // if they match, increase the stack size, so we can find out
+          // when this collection of nested tokens is done
+
+          if ( token.type === collectTokensUntil.replace('_end', '_start') ) {
+            collectTokensStackSize++;
+          }
+
+          if ( token.type === collectTokensUntil ) {
+            collectTokensStackSize--;
+
+            // do not finish this collection sequence,
+            // until we've found the real *_end token
+            if (collectTokensStackSize <= 0) {
+              collectTokens = false;
+              collectTokensUntil = '';
+            }
+          }
+        }
+        
+        // whenever outside of a collection sequence, create a block
+        if ( collectTokens === false )
+        {
+          var tokenType = token.type.replace('_end', '');
+
+          var tokensArray = tokenCollection || [ token ];
+          tokenCollection = false; // reset collection
+          tokensArray.links = tokens.links; // Tokens array requires a `links` property.
+
+          var block = extend( {}, this.blockDefinition, {
+            type: tokenType,
+            content: this.marked.parser(tokensArray)
+          });
+
+          var additionalBlocksBeforeCurrentBlock = [];
+          var additionalBlocksAfterCurrentBlock = [];
+
+          switch (tokenType) {
+            case "code":
+              // create another block for a code demo
+
+              var codeExampleToken = {
+                type: 'html',
+                text: this.getCodeDemoHTML(token.text)
+              };
+
+              var exampleTokensArray = [codeExampleToken];
+              exampleTokensArray.links = tokens.links; // Tokens array requires a `links` property.
+
+              var codeExampleBlock = extend({}, this.blockDefinition, {
+                type: 'html',
+                content: this.marked.parser(exampleTokensArray)
+              });
+
+              additionalBlocksBeforeCurrentBlock.push(codeExampleBlock);
+              break;
+
+            case "heading":
+              block.depth = token.depth;
+              break;
+          }
+
+          blocks = blocks.concat(additionalBlocksBeforeCurrentBlock);
+          blocks.push( block );
+          blocks = blocks.concat(additionalBlocksAfterCurrentBlock);
+
+        }
 
         //console.log( JSON.stringify(token, null, 2) );
       };

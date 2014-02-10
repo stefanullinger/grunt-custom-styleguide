@@ -37,7 +37,7 @@ module.exports = function(grunt) {
           source_path: 'test/fixtures'
         },
         files: {
-          'tmp/styleguide_from_multiple_css_files_using_markdown_test.html': ['base.css','button.css'],
+          'tmp/styleguide_from_multiple_css_files_using_markdown_test.html': ['base.css','button.css', 'markdown-test.css'],
         }
       },
 
